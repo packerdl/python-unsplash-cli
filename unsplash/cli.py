@@ -1,11 +1,28 @@
 import click
 
-from . import api, utils
+from . import api, utils, settings as cfg
 
 
 @click.group()
 def entry():
     pass
+
+
+@entry.group()
+def settings():
+    pass
+
+
+@settings.command()
+@click.argument("key", type=click.STRING)
+@click.argument("value", type=click.STRING)
+def set(key, value):
+    cfg.set(key, value)
+
+
+@settings.command()
+def show():
+    cfg.show()
 
 
 @entry.command()
