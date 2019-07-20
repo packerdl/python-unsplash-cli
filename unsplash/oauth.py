@@ -3,6 +3,7 @@ import urllib.parse
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import click
+from halo import Halo
 from requests import HTTPError
 
 import _thread
@@ -56,6 +57,8 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 
 def login():
+    spinner = Halo(text="Waiting for authorization...", spinner="dots")
+    spinner.start()
     auth_url = "%s?client_id=%s&redirect_uri=%s&response_type=code&scope=%s" % (
         AUTH,
         config["access_key"],
@@ -66,7 +69,9 @@ def login():
     parse = urllib.parse.urlparse(config["redirect_uri"])
     server = OAuthServer((parse.hostname, parse.port), RequestHandler)
     server.serve_forever()
+    user = api.current_user()
+    settings.set("user", user)
     if server.auth_success:
-        print("Authorization Success")
+        spinner.succeed("Logged in as @%s" % config["user"]["username"])
     else:
-        print("Authorization Failed")
+        spinner.fail("Failed to log into Unsplash. Please try again.")

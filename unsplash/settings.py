@@ -31,6 +31,7 @@ def load():
         with open(CONFIG_PATH, "r") as fid:
             config_file = json.load(fid)
             config.update(config_file)
+    return config
 
 
 def set(key, value):
@@ -44,6 +45,10 @@ def clear(*keys):
     for key in keys:
         config.pop(key, None)
     save()
+
+
+def reload():
+    return load()
 
 
 def show():

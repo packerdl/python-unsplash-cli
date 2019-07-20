@@ -4,6 +4,7 @@ from .settings import config
 
 BASE_URL = "https://api.unsplash.com"
 OAUTH = "https://unsplash.com/oauth/token"
+CURRENT_USER = BASE_URL + "/me"
 PHOTO = BASE_URL + "/photos"
 RANDOM = BASE_URL + "/photos/random"
 
@@ -25,6 +26,12 @@ def token(code, redirect_uri):
         "grant_type": "authorization_code",
     }
     r = requests.post(OAUTH, data=data)
+    r.raise_for_status()
+    return r.json()
+
+
+def current_user():
+    r = requests.get(CURRENT_USER, headers=auth_header())
     r.raise_for_status()
     return r.json()
 
