@@ -39,6 +39,13 @@ def set(key, value):
     save()
 
 
+def clear(*keys):
+    global config
+    for key in keys:
+        config.pop(key, None)
+    save()
+
+
 def show():
     print(config)
 

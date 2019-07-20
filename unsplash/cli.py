@@ -1,11 +1,21 @@
 import click
 
-from . import api, utils, settings as cfg
+from . import api, oauth, utils, settings as cfg
 
 
 @click.group()
 def entry():
     pass
+
+
+@entry.command()
+def login():
+    oauth.login()
+
+
+@entry.command()
+def logout():
+    cfg.clear("user", "authorization")
 
 
 @entry.group()
