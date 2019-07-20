@@ -1,4 +1,5 @@
 import click
+from halo import Halo
 
 from . import api, oauth, utils, settings as cfg
 
@@ -15,7 +16,9 @@ def login():
 
 @entry.command()
 def logout():
-    cfg.clear("user", "authorization")
+    with Halo(text="Logging out...", spinner="dots") as spinner:
+        cfg.clear("user", "authorization")
+        spinner.succeed("Logged out of Unsplash")
 
 
 @entry.group()
