@@ -3,6 +3,7 @@ import os
 import sys
 
 import requests
+from click import echo, secho
 
 from . import api
 from .settings import config
@@ -48,3 +49,21 @@ def set_wallpaper(image_path):
             "Unable to set wallpaper for platform %s. Try setting manually: %s"
             % (platform, image_path)
         )
+
+
+def pretty_print_info(photo):
+    print("")
+    if photo["description"]:
+        secho(photo["description"], dim=True)
+    if photo["alt_description"]:
+        secho(photo["alt_description"], dim=True)
+    if not photo["description"] and not photo["alt_description"]:
+        secho("No description provided", dim=True)
+    print("")
+    secho("Downloads ", bold=True, nl=False)
+    echo("%d / " % photo["downloads"], nl=False)
+    secho("Views ", bold=True, nl=False)
+    echo("%d / " % photo["views"], nl=False)
+    secho("Likes ", bold=True, nl=False)
+    echo(photo["likes"])
+    secho(photo["id"], dim=True)
