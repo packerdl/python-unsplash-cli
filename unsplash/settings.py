@@ -13,6 +13,10 @@ config = {
     "redirect_uri": "http://localhost:8015",
     "access_key": "",
     "secret_key": "",
+    "aliases": {
+        "editorial": "317099",
+        "wallpapers": "1065976",
+    },
 }
 
 
