@@ -69,9 +69,8 @@ def login():
     parse = urllib.parse.urlparse(config["redirect_uri"])
     server = OAuthServer((parse.hostname, parse.port), RequestHandler)
     server.serve_forever()
-    user = api.current_user()
-    settings.set("user", user)
     if server.auth_success:
-        spinner.succeed("Logged in as @%s" % config["user"]["username"])
+        user = api.current_user()
+        spinner.succeed("Logged in as @%s" % user["username"])
     else:
         spinner.fail("Failed to log into Unsplash. Please try again.")
