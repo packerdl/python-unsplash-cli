@@ -21,6 +21,11 @@ from . import api, oauth, utils, settings as cfg
     show_default=True,
 )
 @click.option("--query", help="Only return images matching term")
+@click.option(
+    "--collections",
+    help="Only return images from given collections. "
+    + "Specify multiple collections with commas.",
+)
 def entry(ctx, **kwargs):
     if ctx.invoked_subcommand is None:
         spinner = Halo(text="Selecting an image...", spinner="dots").start()
