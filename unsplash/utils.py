@@ -1,4 +1,6 @@
+import ctypes
 import os
+import sys
 
 import requests
 
@@ -11,8 +13,11 @@ DOWNLOAD_LOCATION = os.path.join(HOME, "Pictures", "Unsplash")
 def download(image_id, image_url=None):
     if not os.path.isdir(DOWNLOAD_LOCATION):
         os.makedirs(DOWNLOAD_LOCATION, exist_ok=True)
-    file_path = os.path.join(DOWNLOAD_LOCATION, "%s.jpg" % image_id)
+    if not image_url:
+        image = api.photo(image_id)
+        image_url = image["urls"]["full"]
     api.download_location(image_id)
+    file_path = os.path.join(DOWNLOAD_LOCATION, "%s.jpg" % image_id)
     with requests.get(image_url, stream=True) as r:
         r.raise_for_status()
         with open(file_path, "wb") as fid:
@@ -20,3 +25,28 @@ def download(image_id, image_url=None):
                 if chunk:
                     fid.write(chunk)
     return file_path
+
+
+def set_desktop_windows(image_path):
+    SPI_SETDESKWALLPAPER = 20
+    ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, 0)
+
+
+def set_desktop_linux(image_path):
+    os.system(
+        "/usr/bin/gsettings set org.gnome.desktop.background picture-uri "
+        + "file://%s" % image_path
+    )
+
+
+def set_wallpaper(image_path):
+    platform = sys.platform
+    if platform == "win32":
+        set_desktop_windows(image_path)
+    elif platform == "linux":
+        set_desktop_linux(image_path)
+    else:
+        raise RuntimeError(
+            "Unable to set wallpaper for platform %s. Try setting manually: %s"
+            % (platform, image_path)
+        )
