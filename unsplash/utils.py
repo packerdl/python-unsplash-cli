@@ -5,19 +5,17 @@ import sys
 import requests
 
 from . import api
-
-HOME = os.getenv("HOME", "./")
-DOWNLOAD_LOCATION = os.path.join(HOME, "Pictures", "Unsplash")
+from .settings import config
 
 
 def download(image_id, image_url=None):
-    if not os.path.isdir(DOWNLOAD_LOCATION):
-        os.makedirs(DOWNLOAD_LOCATION, exist_ok=True)
+    if not os.path.isdir(config["directory"]):
+        os.makedirs(config["directory"], exist_ok=True)
     if not image_url:
         image = api.photo(image_id)
         image_url = image["urls"]["full"]
     api.download_location(image_id)
-    file_path = os.path.join(DOWNLOAD_LOCATION, "%s.jpg" % image_id)
+    file_path = os.path.join(config["directory"], "%s.jpg" % image_id)
     with requests.get(image_url, stream=True) as r:
         r.raise_for_status()
         with open(file_path, "wb") as fid:
