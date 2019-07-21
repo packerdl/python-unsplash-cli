@@ -33,6 +33,7 @@ def entry(ctx, **kwargs):
         spinner.succeed(
             "Photo by %s (@%s)" % (image["user"]["name"], image["user"]["username"])
         )
+        utils.pretty_print_info(image)
 
 
 @entry.command()
