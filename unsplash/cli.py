@@ -4,9 +4,35 @@ from halo import Halo
 from . import api, oauth, utils, settings as cfg
 
 
-@click.group()
-def entry():
-    pass
+@click.group(invoke_without_command=True)
+@click.pass_context
+@click.option(
+    "--orientation",
+    type=click.Choice(["any", "landscape", "portrait", "squarish"]),
+    help="Only return images of given orientation",
+    default="any",
+    show_default=True,
+)
+@click.option(
+    "--featured",
+    is_flag=True,
+    default=False,
+    help="Only return featured images",
+    show_default=True,
+)
+@click.option("--query", help="Only return images matching term")
+def entry(ctx, **kwargs):
+    if ctx.invoked_subcommand is None:
+        spinner = Halo(text="Selecting an image...", spinner="dots").start()
+        if kwargs["orientation"] == "any":
+            kwargs.pop("orientation", None)
+        image = api.random(kwargs)
+        spinner.text = "Downloading image..."
+        image_path = utils.download(image["id"], image["urls"]["full"])
+        utils.set_wallpaper(image_path)
+        spinner.succeed(
+            "Photo by %s (@%s)" % (image["user"]["name"], image["user"]["username"])
+        )
 
 
 @entry.command()
@@ -36,25 +62,3 @@ def set(key, value):
 @settings.command()
 def show():
     cfg.show()
-
-
-@entry.command()
-@click.option(
-    "--orientation",
-    type=click.Choice(["landscape", "portrait", "squarish"]),
-    default="landscape",
-    help="Only return images of given orientation",
-    show_default=True,
-)
-@click.option(
-    "--featured",
-    is_flag=True,
-    default=False,
-    help="Only return featured images",
-    show_default=True,
-)
-@click.option("-q", "--query", help="Only return images matching term")
-def random(**kwargs):
-    """Download a random image"""
-    image = api.random(kwargs)
-    utils.download(image["id"], image["urls"]["full"])
