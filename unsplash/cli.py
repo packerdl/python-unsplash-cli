@@ -43,7 +43,7 @@ def login():
 @entry.command()
 def logout():
     with Halo(text="Logging out...", spinner="dots") as spinner:
-        cfg.clear("user", "authorization")
+        cfg.clear("authorization")
         spinner.succeed("Logged out of Unsplash")
 
 
