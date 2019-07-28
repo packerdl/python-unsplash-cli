@@ -26,6 +26,16 @@ def download(image_id, image_url=None):
     return file_path
 
 
+def size_format(n_bytes):
+    power = 10 ** 3
+    level = 0
+    units = ["B", "KB", "MB", "GB", "TB"]
+    while n_bytes > power:
+        n_bytes /= power
+        level += 1
+    return "%.2f %s" % (n_bytes, units[level])
+
+
 def set_desktop_windows(image_path):
     SPI_SETDESKWALLPAPER = 20
     ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, 0)
