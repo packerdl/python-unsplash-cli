@@ -20,17 +20,34 @@ config = {
 }
 
 
-def save():
+@click.group()
+def settings():
+    pass
+
+
+@settings.command(name="set")
+@click.argument("key", type=click.STRING)
+@click.argument("value", type=click.STRING)
+def cmd_set(key, value):
+    set(key, value)
+
+
+@settings.command()
+def show():
+    _show()
+
+
+def _save():
     if not os.path.isdir(CONFIG_DIR):
         os.makedirs(CONFIG_DIR)
     with open(CONFIG_PATH, "w") as fid:
         json.dump(config, fid, indent=2, sort_keys=True)
 
 
-def load():
+def _load():
     global config
     if not os.path.isfile(CONFIG_PATH) or os.path.getsize(CONFIG_PATH) == 0:
-        save()
+        _save()
     else:
         with open(CONFIG_PATH, "r") as fid:
             config_file = json.load(fid)
@@ -41,22 +58,22 @@ def load():
 def set(key, value):
     global config
     config[key] = value
-    save()
+    _save()
 
 
-def clear(*keys):
+def _clear(*keys):
     global config
     for key in keys:
         config.pop(key, None)
-    save()
+    _save()
 
 
-def reload():
-    return load()
+def _reload():
+    return _load()
 
 
-def show():
+def _show():
     print(config)
 
 
-load()
+_load()
