@@ -1,7 +1,7 @@
 import click
 from halo import Halo
 
-from . import aliases, api, oauth, utils, settings as cfg
+from . import aliases, api, directory as folder, oauth, utils, settings as cfg
 
 
 @click.group(invoke_without_command=True)
@@ -103,3 +103,13 @@ def remove(alias):
 @alias.command(name="list")
 def alias_show():
     aliases.show()
+
+
+@entry.group()
+def directory():
+    pass
+
+
+@directory.command(name="info")
+def directory_info():
+    folder.info()
