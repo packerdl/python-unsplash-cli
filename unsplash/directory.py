@@ -1,11 +1,17 @@
 import os
 
-from click import echo, style
+from click import echo, group, style
 
 from .settings import config
 from .utils import size_format
 
 
+@group()
+def directory():
+    pass
+
+
+@directory.command()
 def info():
     directory = config["directory"]
     images = [x for x in os.listdir(directory) if ".jpg" in x]

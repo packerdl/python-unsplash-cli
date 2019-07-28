@@ -56,6 +56,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         _thread.start_new_thread(self.server.shutdown, ())
 
 
+@click.command()
 def login():
     spinner = Halo(text="Waiting for authorization...", spinner="dots")
     spinner.start()
@@ -74,3 +75,10 @@ def login():
         spinner.succeed("Logged in as @%s" % user["username"])
     else:
         spinner.fail("Failed to log into Unsplash. Please try again.")
+
+
+@click.command()
+def logout():
+    with Halo(text="Logging out...", spinner="dots") as spinner:
+        settings._clear("authorization")
+        spinner.succeed("Logged out of Unsplash")
