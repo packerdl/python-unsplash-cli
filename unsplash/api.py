@@ -38,7 +38,7 @@ def current_user():
 
 
 def photo(id):
-    r = requests.get(PHOTO, headers=auth_header())
+    r = requests.get("%s/%s" % (PHOTO, id), headers=auth_header())
     r.raise_for_status()
     return r.json()
 
