@@ -4,6 +4,7 @@ from .settings import config
 
 BASE_URL = "https://api.unsplash.com"
 OAUTH = "https://unsplash.com/oauth/token"
+COLLECTIONS = BASE_URL + "/collections"
 CURRENT_USER = BASE_URL + "/me"
 PHOTO = BASE_URL + "/photos"
 RANDOM = BASE_URL + "/photos/random"
@@ -51,3 +52,38 @@ def random(params={}):
 def download_location(id):
     r = requests.get("%s/photos/%s/download" % (BASE_URL, id), headers=auth_header())
     r.raise_for_status()
+
+
+def create_collection(title, description="", private=False):
+    r = requests.post(
+        COLLECTIONS,
+        data={"title": title, "description": description, "private": str(private).lower()},
+        headers=auth_header()
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def delete_collection(collection_id):
+    r = requests.delete("%s/%s" % (COLLECTIONS, collection_id), headers=auth_header())
+    r.raise_for_status()
+
+
+def add_to_collection(collection_id, photo_id):
+    r = requests.post(
+        "%s/%s/add" % (COLLECTIONS, collection_id),
+        data={"collection_id": collection_id, "photo_id": photo_id},
+        headers=auth_header(),
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def remove_from_collection(collection_id, photo_id):
+    r = requests.delete(
+        "%s/%s/remove" % (COLLECTIONS, collection_id),
+        data={"collection_id": collection_id, "photo_id": photo_id},
+        headers=auth_header(),
+    )
+    r.raise_for_status()
+    return r.json()
