@@ -26,14 +26,21 @@ from . import alias, api, utils
     help="Only return images from given collections. "
     + "Specify multiple collections with commas.",
 )
+@click.option(
+    "--id",
+    help="Fetch a specific photo by its ID. Overrides all other options."
+)
 def entry(ctx, **kwargs):
     if ctx.invoked_subcommand is None:
         spinner = Halo(text="Selecting an image...", spinner="dots").start()
-        if kwargs["orientation"] == "any":
-            kwargs.pop("orientation", None)
-        if kwargs["collections"]:
-            kwargs["collections"] = alias.resolve(kwargs["collections"])
-        image = api.random(kwargs)
+        if kwargs["id"]:
+            image = api.photo(kwargs["id"])
+        else:
+            if kwargs["orientation"] == "any":
+                kwargs.pop("orientation", None)
+            if kwargs["collections"]:
+                kwargs["collections"] = alias.resolve(kwargs["collections"])
+            image = api.random(kwargs)
         spinner.text = "Downloading image..."
         image_path = utils.download(image["id"], image["urls"]["full"])
         utils.set_wallpaper(image_path)
