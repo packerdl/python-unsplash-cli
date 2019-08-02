@@ -43,6 +43,17 @@ def photo(id):
     return r.json()
 
 
+def like(id):
+    r = requests.post("%s/%s/like" % (PHOTO, id), headers=auth_header())
+    r.raise_for_status()
+    return r.json()
+
+
+def unlike(id):
+    r = requests.delete("%s/%s/like" % (PHOTO, id), headers=auth_header())
+    r.raise_for_status()
+
+
 def random(params={}):
     r = requests.get(RANDOM, headers=auth_header(), params=params)
     r.raise_for_status()

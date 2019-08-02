@@ -12,7 +12,7 @@ from . import api, settings
 from .settings import config
 
 AUTH = "https://unsplash.com/oauth/authorize"
-SCOPES = "public+read_photos+read_collections+write_collections"
+SCOPES = "public+read_photos+read_collections+write_collections+write_likes"
 
 
 class OAuthServer(HTTPServer):
