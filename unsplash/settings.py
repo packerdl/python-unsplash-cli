@@ -2,6 +2,7 @@ import json
 import os
 
 import click
+from .utils import pretty_dict
 
 CONFIG_DIR = click.get_app_dir("unsplash-cli")
 CONFIG_PATH = os.path.join(CONFIG_DIR, "config.json")
@@ -34,7 +35,8 @@ def cmd_set(key, value):
 
 @settings.command()
 def show():
-    _show()
+    click.echo("")
+    pretty_dict(config)
 
 
 def _save():
@@ -70,10 +72,6 @@ def _clear(*keys):
 
 def _reload():
     return _load()
-
-
-def _show():
-    print(config)
 
 
 _load()
