@@ -2,6 +2,7 @@ import click
 from halo import Halo
 
 from . import settings
+from .utils import pretty_dict
 
 
 @click.group()
@@ -34,7 +35,9 @@ def remove(alias):
 
 @alias.command(name="list")
 def show():
-    _list()
+    aliases = settings.config["aliases"]
+    click.echo("")
+    pretty_dict(aliases)
 
 
 def _add(alias, value):
@@ -51,10 +54,6 @@ def _remove(alias):
     aliases = settings.config["aliases"]
     aliases.pop(alias, None)
     settings.set("aliases", aliases)
-
-
-def _list():
-    print(settings.config["aliases"])
 
 
 def resolve(input):
