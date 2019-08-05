@@ -3,9 +3,10 @@ import requests
 from .settings import config
 
 BASE_URL = "https://api.unsplash.com"
-OAUTH = "https://unsplash.com/oauth/token"
 COLLECTIONS = BASE_URL + "/collections"
 CURRENT_USER = BASE_URL + "/me"
+ME = BASE_URL + "/me"
+OAUTH = "https://unsplash.com/oauth/token"
 PHOTO = BASE_URL + "/photos"
 RANDOM = BASE_URL + "/photos/random"
 
@@ -96,5 +97,11 @@ def remove_from_collection(collection_id, photo_id):
         data={"collection_id": collection_id, "photo_id": photo_id},
         headers=auth_header(),
     )
+    r.raise_for_status()
+    return r.json()
+
+
+def me():
+    r = requests.get(ME, headers=auth_header())
     r.raise_for_status()
     return r.json()

@@ -5,6 +5,7 @@ from .directory import directory
 from .entry import entry
 from .like import like, unlike
 from .settings import settings
+from .user import user
 
 entry.add_command(alias)
 entry.add_command(collection)
@@ -14,5 +15,6 @@ entry.add_command(login)
 entry.add_command(logout)
 entry.add_command(settings)
 entry.add_command(unlike)
+entry.add_command(user)
 
 entry()

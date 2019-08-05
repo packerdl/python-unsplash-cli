@@ -12,7 +12,14 @@ from . import api, settings
 from .settings import config
 
 AUTH = "https://unsplash.com/oauth/authorize"
-SCOPES = "public+read_photos+read_collections+write_collections+write_likes"
+SCOPES = [
+    "public",
+    "read_collections",
+    "read_photos",
+    "write_collections",
+    "write_likes",
+    "write_user",
+]
 
 
 class OAuthServer(HTTPServer):
@@ -64,7 +71,7 @@ def login():
         AUTH,
         config["access_key"],
         urllib.parse.quote(config["redirect_uri"]),
-        SCOPES,
+        "+".join(SCOPES),
     )
     click.launch(auth_url)
     parse = urllib.parse.urlparse(config["redirect_uri"])
