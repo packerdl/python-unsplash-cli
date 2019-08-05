@@ -37,3 +37,24 @@ def get(username):
         pretty_dict(user)
     except Exception:
         spinner.fail("Unable to fetch user information.")
+
+
+@user.command()
+@click.option("--username", help="Desired screen name")
+@click.option("--first-name", help="Your first name")
+@click.option("--last-name", help="Your last name")
+@click.option("--email", help="Account email address")
+@click.option("--url", help="Portfolio or personal webpage URL")
+@click.option("--location", help="Your location")
+@click.option("--bio", help="Personal description")
+@click.option("--instagram-username", help="Associated Instagram account")
+def update(**kwargs):
+    spinner = Halo(text="Updating user information...", spinner="dots").start()
+    if not any(kwargs.values()):
+        spinner.warn("No values to update were supplied.")
+        return
+    try:
+        api.update_user(kwargs)
+        spinner.succeed("Account successfully updated.")
+    except Exception:
+        spinner.fail("Unable to update account information.")

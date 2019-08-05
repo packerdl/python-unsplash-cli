@@ -112,3 +112,9 @@ def get_user(username):
     r = requests.get("%s/%s" % (USERS, username), headers=auth_header())
     r.raise_for_status()
     return r.json()
+
+
+def update_user(params={}):
+    r = requests.put(ME, data=params, headers=auth_header())
+    r.raise_for_status()
+    return r.json()
