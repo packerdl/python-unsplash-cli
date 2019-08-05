@@ -4,6 +4,10 @@ import sys
 
 from click import echo, style
 
+SPI_SETDESKWALLPAPER = 0x14
+SPIF_UPDATEINIFILE = 0x01
+SPIF_SENDCHANGE = 0x02
+
 
 def size_format(n_bytes):
     power = 10 ** 3
@@ -16,8 +20,12 @@ def size_format(n_bytes):
 
 
 def set_desktop_windows(image_path):
-    SPI_SETDESKWALLPAPER = 20
-    ctypes.windll.user32.SystemParametersInfoW(SPI_SETDESKWALLPAPER, 0, image_path, 0)
+    ctypes.windll.user32.SystemParametersInfoW(
+        SPI_SETDESKWALLPAPER,
+        0,
+        image_path,
+        SPIF_UPDATEINIFILE | SPIF_SENDCHANGE,
+    )
 
 
 def set_desktop_linux(image_path):
