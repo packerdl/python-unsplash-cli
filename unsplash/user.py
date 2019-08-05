@@ -24,3 +24,16 @@ def me():
         pretty_dict(user)
     except Exception:
         spinner.fail("Unable to fetch user information.")
+
+
+@user.command()
+@click.argument("username")
+def get(username):
+    spinner = Halo(text="Fetching @%s's user information..." % username, spinner="dots").start()
+    try:
+        user = api.get_user(username)
+        spinner.succeed("Information for user @%s:" % username)
+        click.echo("")
+        pretty_dict(user)
+    except Exception:
+        spinner.fail("Unable to fetch user information.")
