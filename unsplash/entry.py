@@ -13,7 +13,7 @@ from .settings import config
 @click.option(
     "--orientation",
     type=click.Choice(["any", "landscape", "portrait", "squarish"]),
-    help="Only return images of given orientation",
+    help="Only return images of given orientation.",
     default="any",
     show_default=True,
 )
@@ -21,20 +21,25 @@ from .settings import config
     "--featured",
     is_flag=True,
     default=False,
-    help="Only return featured images",
+    help="Only return featured images.",
     show_default=True,
 )
 @click.option("--query", help="Only return images matching term")
 @click.option(
     "--collections",
-    help="Only return images from given collections. "
-    + "Specify multiple collections with commas.",
+    help="Only return images from given collections (comma-separated IDs or aliases).",
 )
-@click.option(
-    "--id",
-    help="Fetch a specific photo by its ID. Overrides all other options."
-)
+@click.option("--id", help="Fetch photo by id (overrides other options).")
 def entry(ctx, **kwargs):
+    """Unofficial command-line client for the Unsplash API.
+
+    Give your desktop some personality with gorgeous photos from artists
+    on Unsplash! Manage your account, collections, liked photos, and more.
+
+    When no command is specified, the default behaviour is to download a
+    photo given the supplied options and set it as the user's desktop
+    wallpaper.
+    """
     if ctx.invoked_subcommand is None:
         spinner = Halo(text="Selecting an image...", spinner="dots").start()
         if kwargs["id"]:

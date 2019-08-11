@@ -7,6 +7,12 @@ from .utils import pretty_dict
 
 @click.group()
 def alias():
+    """Manage collection aliases.
+
+    The Unsplash API requires collections to be specified by their
+    numeric ID. For convenience, aliases can be used as a substitute
+    wherever collection IDs are required.
+    """
     pass
 
 
@@ -14,6 +20,10 @@ def alias():
 @click.argument("alias")
 @click.argument("value")
 def add(alias, value):
+    """Create a new alias.
+
+    Define ALIAS as reference to collection with identifier VALUE.
+    """
     spinner = Halo(text="Adding alias...", spinner="dots").start()
     try:
         _add(alias, value)
@@ -25,6 +35,10 @@ def add(alias, value):
 @alias.command()
 @click.argument("alias")
 def remove(alias):
+    """Remove an alias.
+
+    Removes definition of ALIAS. It will no longer resolve to its given value.
+    """
     spinner = Halo(text="Removing alias...", spinner="dots").start()
     try:
         _remove(alias)
@@ -35,6 +49,7 @@ def remove(alias):
 
 @alias.command(name="list")
 def show():
+    """Display defined aliases."""
     aliases = settings.config["aliases"]
     click.echo("")
     pretty_dict(aliases)

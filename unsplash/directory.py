@@ -9,11 +9,13 @@ from .utils import size_format
 
 @group()
 def directory():
+    """Manage local storage of photos."""
     pass
 
 
 @directory.command()
 def info():
+    """Displays summary of photo storage."""
     with Halo(text="Checking local folder...", spinner="dots"):
         info = stats()
     echo("\n" + style("Directory: ", bold=True) + "%s" % info["path"])
@@ -23,6 +25,10 @@ def info():
 
 @directory.command()
 def clean():
+    """Clears photo storage.
+
+    Deletes all locally stored photos. This action CANNOT BE UNDONE!
+    """
     with Halo(text="Checking directory...", spinner="dots"):
         info = stats()
     spinner = Halo(text="Cleaning directory...", spinner="dots")
