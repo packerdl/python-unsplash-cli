@@ -8,11 +8,13 @@ from .utils import pretty_dict
 
 @click.group()
 def user():
+    """Manage user information."""
     pass
 
 
 @user.command()
 def me():
+    """Display information of current user."""
     spinner = Halo(text="Fetching current user's information...", spinner="dots").start()
     if "authorization" not in config:
         spinner.warn("Not logged into Unsplash. Please log in first.")
@@ -29,6 +31,10 @@ def me():
 @user.command()
 @click.argument("username")
 def get(username):
+    """Display information of a specific user.
+
+    View information of user with handle @USERNAME.
+    """
     spinner = Halo(text="Fetching @%s's user information..." % username, spinner="dots").start()
     try:
         user = api.get_user(username)
@@ -49,6 +55,7 @@ def get(username):
 @click.option("--bio", help="Personal description")
 @click.option("--instagram-username", help="Associated Instagram account")
 def update(**kwargs):
+    """Modify user account details."""
     spinner = Halo(text="Updating user information...", spinner="dots").start()
     if not any(kwargs.values()):
         spinner.warn("No values to update were supplied.")

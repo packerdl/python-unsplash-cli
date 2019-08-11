@@ -2,6 +2,7 @@ import json
 import os
 
 import click
+
 from .utils import pretty_dict
 
 CONFIG_DIR = click.get_app_dir("unsplash-cli")
@@ -23,6 +24,7 @@ config = {
 
 @click.group()
 def settings():
+    """Manage application settings."""
     pass
 
 
@@ -30,11 +32,16 @@ def settings():
 @click.argument("key", type=click.STRING)
 @click.argument("value", type=click.STRING)
 def cmd_set(key, value):
+    """Add or modify an application setting.
+
+    Sets KEY to VALUE in application settings.
+    """
     set(key, value)
 
 
 @settings.command()
 def show():
+    """List current application settings."""
     click.echo("")
     pretty_dict(config)
 

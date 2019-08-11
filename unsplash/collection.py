@@ -7,6 +7,7 @@ from .alias import resolve
 
 @click.group()
 def collection():
+    """Manage photo collections."""
     pass
 
 
@@ -15,6 +16,11 @@ def collection():
 @click.argument("title")
 @click.argument("description", nargs=-1)
 def create(title, description, private):
+    """Create a new collection.
+
+    Creates a new collection with provided TITLE and DESCRIPTION. New
+    collections are public by default.
+    """
     spinner = Halo(text="Creating collection...", spinner="dots").start()
     try:
         if description:
@@ -28,6 +34,13 @@ def create(title, description, private):
 @collection.command()
 @click.argument("collection")
 def delete(collection):
+    """Delete a collection.
+
+    Permanently delete a collection from your account. COLLECTION can either
+    be a collection ID or alias.
+
+    This action CANNOT BE UNDONE!
+    """
     spinner = Halo(text="Deleting collection...", spinner="dots")
     confirmed = click.confirm(
         "\nThis will %s your collection. Continue?"
@@ -50,6 +63,11 @@ def delete(collection):
 @click.argument("photo")
 @click.argument("collection")
 def add(photo, collection):
+    """Add photo to collection.
+
+    Adds PHOTO to COLLECTION. PHOTO is the ID of the photo. COLLECTION can
+    either be a collection ID or alias.
+    """
     spinner = Halo(text="Adding photo to collection...", spinner="dots").start()
     try:
         collection_id = resolve(collection)
@@ -63,6 +81,11 @@ def add(photo, collection):
 @click.argument("photo")
 @click.argument("collection")
 def remove(photo, collection):
+    """Remove photo from collection.
+
+    Removes PHOTO from COLLECTION. PHOTO is the ID of the photo. COLLECTION
+    can either be a collection ID or alias.
+    """
     spinner = Halo(text="Removing photo from collection...", spinner="dots").start()
     try:
         collection_id = resolve(collection)

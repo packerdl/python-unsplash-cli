@@ -65,6 +65,13 @@ class RequestHandler(BaseHTTPRequestHandler):
 
 @click.command()
 def login():
+    """Authorize access to your Unsplash account.
+
+    Obtain an access token to interact with protected resources. Access tokens
+    are granted through the standard OAuth authorization code workflow. The
+    authorization web page will be opened automatically in your default web
+    browser.
+    """
     spinner = Halo(text="Waiting for authorization...", spinner="dots")
     spinner.start()
     auth_url = "%s?client_id=%s&redirect_uri=%s&response_type=code&scope=%s" % (
@@ -86,6 +93,7 @@ def login():
 
 @click.command()
 def logout():
+    """Clear stored access tokens."""
     with Halo(text="Logging out...", spinner="dots") as spinner:
         settings._clear("authorization")
         spinner.succeed("Logged out of Unsplash")
